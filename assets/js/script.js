@@ -122,6 +122,45 @@ var text = $(this).val();
   
 });
 
+$(".list-group").on("click", "span", function() {
+  var date = $(this)
+  .text()
+  .trim();
+
+  var dateInput = $("<input>")
+  .attr("type", "text")
+  .addClass("form-control")
+  .val(date);
+
+  $(this).replaceWith(dateInput);
+
+  dateInput.trigger("focus");
+});
+
+$(".list-group").on("blur", "input[type='text']", function() {
+  var date = $(this)
+  .val()
+  .trim();
+
+  var status = $(this)
+  .closest(".list-group")
+  .attr("id")
+  .replace("list-", "");
+
+  var index = $(this)
+  .closest(".list-group-item")
+  .index();
+
+  tasks[status][index].date = date;
+  saveTasks();
+
+  var taskSpan = $("<span>")
+  .addClass("badge badge-primary badge-pill")
+  .text(date);
+
+  $(this).replaceWith(taskSpan);
+});
+
 // remove all tasks
 $("#remove-tasks").on("click", function() {
   for (var key in tasks) {
