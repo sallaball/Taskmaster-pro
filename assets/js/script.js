@@ -8,7 +8,7 @@ var createTask = function(taskText, taskDate, taskList) {
     .text(taskDate);
   var taskP = $("<p>")
     .addClass("m-1")
-    .text(taskText);
+    .text(taskText); 
 
   // append span and p element to parent li
   taskLi.append(taskSpan, taskP);
@@ -45,7 +45,54 @@ var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+$(".card .list-group").sortable({
+  // enable dragging across lists
+  connectWith: $(".card .list-group"),
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",
+  activate: function(event, ui) {
+    console.log(ui);
+  },
+  deactivate: function(event, ui) {
+    console.log(ui);
+  },
+  over: function(event) {
+    console.log(event);
+  },
+  out: function(event) {
+    console.log(event);
+  },
+  update: function() {
+    var tempArr = [];
 
+    // loop over current set of children in sortable list
+    $(this)
+      .children()
+      .each(function() {
+        // save values in temp array
+        tempArr.push({
+          text: $(this)
+            .find("p")
+            .text()
+            .trim(),
+          date: $(this)
+            .find("span")
+            .text()
+            .trim()
+        });
+      });
+
+    // trim down list's ID to match object property
+    var arrName = $(this)
+      .attr("id")
+      .replace("list-", "");
+
+    // update array on tasks object and save
+    tasks[arrName] = tempArr;
+    saveTasks();
+  }
+});
 
 
 // modal was triggered
