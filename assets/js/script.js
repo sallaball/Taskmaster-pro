@@ -110,6 +110,10 @@ $("#trash").droppable({
   }
 });
 
+$("#modalDueDate").datepicker( {
+  minDate: 1
+});
+
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
@@ -121,7 +125,9 @@ $("#task-form-modal").on("show.bs.modal", function() {
 $("#task-form-modal").on("shown.bs.modal", function() {
   // highlight textarea
   $("#modalTaskDescription").trigger("focus");
+  
 });
+
 
 // save button in modal was clicked
 $("#task-form-modal .btn-primary").click(function() {
@@ -190,17 +196,22 @@ $(".list-group").on("click", "span", function() {
   .text()
   .trim();
 
-  var dateInput = $("<input>")
-  .attr("type", "text")
-  .addClass("form-control")
-  .val(date);
+  var dateInput = $("<input>").attr("type", "text").addClass("form-control").val(date);
+
 
   $(this).replaceWith(dateInput);
+
+  dateInput.datepicker({
+    minDate: 1,
+    onClose: function() {
+      $(this).trigger("change");
+    }
+  });
 
   dateInput.trigger("focus");
 });
 
-$(".list-group").on("blur", "input[type='text']", function() {
+$(".list-group").on("change", "input[type='text']", function() {
   var date = $(this)
   .val()
   .trim();
