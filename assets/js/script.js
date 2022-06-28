@@ -14,6 +14,13 @@ var auditTask = function(taskEl) {
   else if (Math.abs(moment().diff(time, "days")) <= 2) {
     $(taskEl).addClass("list-group-item-warning");
   }
+
+  setInterval(function() {
+    $(".card .list-group-item").each(function(index, el) {
+      auditTask(el);
+    })
+  }, 1800000);
+  console.log(taskEl);
 }
 
 var createTask = function(taskText, taskDate, taskList) {
@@ -268,5 +275,7 @@ $("#remove-tasks").on("click", function() {
 
 // load tasks for the first time
 loadTasks();
+
+
 
 
